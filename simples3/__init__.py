@@ -123,6 +123,6 @@ from __future__ import absolute_import
 
 __version__ = "1.1.0"
 
-from .bucket import S3File, S3Bucket, S3Error, KeyNotFound
-S3File, S3Bucket, S3Error, KeyNotFound  # pyflakes
-__all__ = "S3File", "S3Bucket", "S3Error"
+from .bucket import S3File, S3Item, S3Bucket, S3Error, KeyNotFound
+S3File, S3Item, S3Bucket, S3Error, KeyNotFound  # pyflakes
+__all__ = "S3File", "S3Item", "S3Bucket", "S3Error"

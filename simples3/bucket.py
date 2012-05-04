@@ -10,6 +10,7 @@ import urllib2
 import datetime
 import warnings
 from xml.etree import cElementTree as ElementTree
+from collections import namedtuple
 from contextlib import contextmanager
 from urllib import quote_plus
 from base64 import b64encode
@@ -164,6 +165,9 @@ class S3File(str):
     def put_into(self, bucket, key):
         return bucket.put(key, **self.kwds)
 
+# A holder for tuples yielded by S3Bucket.listdir function.
+S3Item = namedtuple('S3Item', 'key modified etag size')
+
 class S3Listing(object):
     """Representation of a single pageful of S3 bucket listing data."""
 
@@ -200,7 +204,7 @@ class S3Listing(object):
         modify = _iso8601_dt(get("LastModified"))
         etag = get("ETag")
         size = int(get("Size"))
-        return (key, modify, etag, size)
+        return S3Item._make((key, modify, etag, size))
 
 class S3Bucket(object):
     default_encoding = "utf-8"
@@ -372,7 +376,8 @@ class S3Bucket(object):
     def listdir(self, prefix=None, marker=None, limit=None, delimiter=None):
         """List bucket contents.
 
-        Yields tuples of (key, modified, etag, size).
+        Yields tuples of (key, modified, etag, size). For convenience,
+        such tuples are actually instances of named tuple S3Item.
 
         *prefix*, if given, predicates `key.startswith(prefix)`.
         *marker*, if given, predicates `key > marker`, lexicographically.
