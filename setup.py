@@ -16,4 +16,6 @@ setup(name="simples3", version=simples3.__version__,
       author="Ludvig Ericson", author_email="ludvig@lericson.se",
       description="Simple, quick Amazon AWS S3 interface",
       long_description=long_description,
-      packages=["simples3"])
+      packages=["simples3"],
+      entry_points=dict(console_scripts=[
+            'simples3-rm=simples3.commandline:rm_tool']))
